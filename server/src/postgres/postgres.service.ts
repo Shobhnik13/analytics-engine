@@ -27,6 +27,7 @@ export class PostgresService implements OnModuleInit {
                 properties JSONB,
                 event_timestamp TIMESTAMPTZ DEFAULT NOW()
                 )`)
+        logger.info("CURRENT DB IS POSTGRES, CHANGE TO CLICKHOUSE IN .ENV FILE")
         logger.info("[INFO] POSTGRES CLIENT SETUP COMPLETED AND TABLES ARE READY");
     }
 

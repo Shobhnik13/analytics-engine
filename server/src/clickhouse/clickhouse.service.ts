@@ -37,6 +37,7 @@ export class ClickhouseService implements OnModuleInit {
         ORDER BY (event, event_timestamp, uuid)
             `
         })
+        logger.info("CURRENT DB IS CLICKHOUSE, CHANGE TO POSTGRES IN .ENV FILE")
         logger.info("[INFO] CLICKHOUSE CLIENT SETUP COMPLETED AND TABLES ARE READY");
     }
 

@@ -44,13 +44,14 @@ export class ClickhouseService implements OnModuleInit {
     async insertMany(rows: any[]) {
         if (!rows || rows.length === 0) return;
 
+        const cleaned = rows.map(({ redisId, ...rest }) => rest);
         await this.client.insert({
             table: 'events',
             format: 'JSONEachRow',
-            values: rows
-        });
+            values: cleaned 
+        }); 
     }
-
+ 
     async query(sql: string) {
         const res = await this.client.query({
             query: sql,

@@ -8,7 +8,7 @@ const redis = new Redis(process.env.REDIS_URL || 'redis://localhost:6379');
 
 @Injectable()
 export class CaptureService {
-    private streamName = process.env.REDIS_QUEUE || 'insightplus_events';
+    private streamName = process.env.REDIS_QUEUE || "";
 
     async queueEvent(body: {
         event: string,

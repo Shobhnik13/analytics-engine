@@ -4,12 +4,19 @@ import { PostgresService } from "src/postgres/postgres.service"
 
 export class DatabaseModule {
     static register(): DynamicModule {
-        const dbType = process.env.DATABASE_TYPE || "clickhouse" 
+        const dbType = process.env.DATABASE_TYPE || "clickhouse"
         const provider = dbType === "clickhouse" ? ClickhouseService : PostgresService
+
         return {
-            module: DatabaseModule, 
-            providers: [provider],
-            exports: [provider],
+            module: DatabaseModule,
+            providers: [
+                provider,
+                {
+                    provide: "ACTIVE_DB_SERVICE",
+                    useExisting: provider
+                }
+            ],
+            exports: ["ACTIVE_DB_SERVICE"],
         }
     }
 }

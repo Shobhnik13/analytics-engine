@@ -18,7 +18,6 @@ export class CaptureService {
     }) {
 
         const { event, distinctId, properties, timestamp } = body || {};
-        if (!event || !distinctId) throw new BadRequestException("event and distinctId are required fields");
         if (!isValidEvent(event)) throw new BadRequestException(`Invalid event '${event}'`);
 
         const record = {

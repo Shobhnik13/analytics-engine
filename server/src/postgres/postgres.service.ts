@@ -75,7 +75,7 @@ export class PostgresService implements OnModuleInit {
             r.event,
             r.distinct_id,
             JSON.stringify(r.properties),
-            r.event_timestamp
+            new Date(r.event_timestamp)
         ])
 
         await this.client.query(q, valsToInsert)

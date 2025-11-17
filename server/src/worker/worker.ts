@@ -24,7 +24,7 @@ export async function startWorker(db: any) {
         await redis.xgroup('CREATE', streamKey, groupName, '$', 'MKSTREAM');
     } catch (err: any) {
         if (!err.message.includes('BUSYGROUP')) {
-            logger.info(`[ERROR] Redis Group creation failed: ${err.message}`);
+            logger.error(`[ERROR] Redis Group creation failed: ${err.message}`);
         } else {
             logger.info("[IGNORE] Consumer group already exists");
         }
@@ -74,9 +74,9 @@ export async function startWorker(db: any) {
                             event: event.event,
                             distinct_id: event.distinct_id,
                             properties: event.properties,
-                            event_timestamp: event.event_timestamp 
-                                .replace('T', ' ')
-                                .replace('Z', ''),
+                            event_timestamp: process.env.DB_TYPE === "clickhouse"
+                                ? event.event_timestamp.replace("T", " ").replace("Z", "")
+                                : new Date(event.event_timestamp),
                             redisId: id,
                         };
                     })
@@ -94,7 +94,7 @@ export async function startWorker(db: any) {
                 }
 
             } catch (err: any) {
-                logger.info(`[ERROR][Worker ${consumerName}] ${err.message}`);
+                logger.error(`[ERROR][Worker ${consumerName}] ${err.message}`);
                 await new Promise((r) => setTimeout(r, 1000));
             }
         }

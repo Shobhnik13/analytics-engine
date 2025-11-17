@@ -5,10 +5,11 @@ import { DatabaseModule } from './database/database.module';
 import { CaptureController } from './capture/capture.controller';
 import { AnalyticsService } from './analytics/analytics.service';
 import { CaptureService } from './capture/capture.service';
+import { AnalyticsController } from './analytics/analytics.controller';
 
 @Module({
   imports: [DatabaseModule.register()],
-  controllers: [CaptureController],
+  controllers: [CaptureController, AnalyticsController],
   providers: [CaptureService, AnalyticsService],
 })
 export class AppModule { }

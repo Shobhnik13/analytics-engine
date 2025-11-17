@@ -1,4 +1,4 @@
-import { Injectable, Optional } from "@nestjs/common";
+import { Inject, Injectable, Optional } from "@nestjs/common";
 import { ClickhouseService } from "src/clickhouse/clickhouse.service";
 import { PostgresService } from "src/postgres/postgres.service";
 
@@ -10,10 +10,9 @@ export class AnalyticsService {
   private isClickhouse: boolean
 
   constructor(
-    @Optional() private readonly click: ClickhouseService,
-    @Optional() private readonly pg: PostgresService) {
-    this.isClickhouse = process.env.DATABASE_TYPE === "clickhouse";
-    this.db = this.isClickhouse ? this.click : this.pg;
+    @Inject('ACTIVE_DB_SERVICE') private readonly dbService: any
+  ) {
+    this.db = dbService
   }
 
   // helper method to run queries on the selected database

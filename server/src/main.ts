@@ -8,6 +8,7 @@ import helmet from 'helmet';
 import { startWorker } from './worker/worker';
 import { ClickhouseService } from './clickhouse/clickhouse.service';
 import { PostgresService } from './postgres/postgres.service';
+import { ValidationPipe } from '@nestjs/common';
 
 
 async function bootstrap() {
@@ -16,7 +17,8 @@ async function bootstrap() {
   app.use(helmet())
   app.enableCors()
   app.setGlobalPrefix('api/v1')
-  // app.useGlobalPipes()
+  
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }))
 
   const dbService = app.get("ACTIVE_DB_SERVICE")
 
@@ -25,7 +27,7 @@ async function bootstrap() {
   try {
     await startWorker(dbService)
   } catch (err: any) {
-    logger.info(`[WARN] WORKER INITIALIZATION FAILED`)
+    logger.error(`[WARN] WORKER INITIALIZATION FAILED`)
   }
   logger.info(`[INFO] ANALYTICS ENGINE RUNNING ON http://localhost:${PORT}`)
 }

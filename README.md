@@ -70,7 +70,7 @@ export const validEvents = [
 
 **Now the /api/v1/capture endpoint will accept these events**
 
-# C) Customize or Add Analytics Queries
+# B) Customize or Add Analytics Queries
 All SQL analytics queries/logic lives inside:    
 **src/analytics/analytics.service.ts**
 
@@ -89,7 +89,7 @@ async getButtonClicks() {
 
 Expose it in the controller → new analytics API ready.
 
-# B) Switching Between ClickHouse & PostgreSQL
+# C) Switching Between ClickHouse & PostgreSQL
 **In .env file:**   
 DATABASE_TYPE=clickhouse  
 OR   

@@ -5,10 +5,10 @@ import { AnalyticsService } from "./analytics.service";
 export class AnalyticsController {
     constructor(private readonly analyticsService: AnalyticsService) { }
 
-    // @Get('all')
-    // async getAllAnalytics() {
-
-    // }
+    @Get('all')
+    async getAllAnalytics() {
+        return this.analyticsService.allAnalytics()
+    }
 
     @Get('dau')
     async getDauAnalytics(@Query('days') days?: string) {
@@ -17,7 +17,7 @@ export class AnalyticsController {
     }
 
     @Get('mau')
-    async getMauAnalytics() { 
+    async getMauAnalytics() {
         return this.analyticsService.getMonthlyActiveUsesrs()
     }
 

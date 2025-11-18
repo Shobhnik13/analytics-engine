@@ -13,6 +13,7 @@ export class AnalyticsService {
     @Inject('ACTIVE_DB_SERVICE') private readonly dbService: any
   ) {
     this.db = dbService
+    this.isClickhouse = dbService instanceof ClickhouseService
   }
 
   // helper method to run queries on the selected database
@@ -22,6 +23,35 @@ export class AnalyticsService {
 
   // analytics methods
 
+  async allAnalytics() {
+    const [
+      dau,
+      mau,
+      totalUsers,
+      totalEvents,
+      mostUsedFeature,
+      funnel,
+      mostActive
+    ] = await Promise.all([
+      this.dailyAciveUsers(30),
+      this.getMonthlyActiveUsesrs(6),
+      this.getTotalUsers(),
+      this.getTotalEvents(),
+      this.mostUsedFeatures(),
+      this.getConversionFunnel(),
+      this.getMostActiveUsers()
+    ])
+
+    return {
+      dau,
+      mau,
+      totalUsers,
+      totalEvents,
+      mostUsedFeature,
+      signupToPaidConversion: funnel,
+      mostActiveUsers: mostActive
+    };
+  }
   // most used features
   async mostUsedFeatures() {
     return this.runQuery(
